@@ -2,7 +2,10 @@
 //THE TEST SERVER IS RUNNING ON LOCALHOST:3000//
 ////////////////////////////////////////////////
 
-const { default: axios } = require("axios")
+//const { default: axios } = require("axios");
+
+//const { default: axios } = require("axios");
+
 
 // PROBLEM 1
 /*
@@ -15,6 +18,7 @@ const { default: axios } = require("axios")
 let sayHelloButton = document.querySelector('#say-hello-button')
 
 
+
 // PROBLEM 2
 /*
     Create a function that changes sayHelloButton's background color to black and 
@@ -24,10 +28,12 @@ let sayHelloButton = document.querySelector('#say-hello-button')
 */
 
 // CODE HERE
-sayHelloButton.addEventListener('mouseover', changeBackgroundColor = () => {
-    sayHelloButton.style.backgroundColor = 'black'
-    sayHelloButton.style.color = 'white'
+sayHelloButton.addEventListener('mouseover', () => {
+    sayHelloButton.style.backgroundColor = 'black';
+    sayHelloButton.style.color = 'white';
 })
+
+
 
 
 // PROBLEM 3
@@ -42,10 +48,12 @@ sayHelloButton.addEventListener('mouseover', changeBackgroundColor = () => {
 */
 
 // CODE HERE
-sayHelloButton.addEventListener('mouseout', revert = () => {
+sayHelloButton.addEventListener('mouseout', () => {
     sayHelloButton.style.backgroundColor = '#EFEFEF'
     sayHelloButton.style.color = 'black'
 })
+
+
 
 
 // PROBLEM 4
@@ -67,7 +75,9 @@ const sayHello = () => {
 // DO NOT EDIT FUNCTION
 
 // CODE HERE
-sayHelloButton.addEventListener('clicked', sayHello)
+sayHelloButton.addEventListener('click', sayHello)
+
+
 
 
 // PROBLEM 5 
@@ -83,18 +93,21 @@ sayHelloButton.addEventListener('clicked', sayHello)
     (in the intermediate instructions we'll come back to this function and add HTML).
 */ 
 
-// return axios.get('http://localhost:3000/animals')
-// .then(res => {
-//     return res.data
-// })
-
 const ohMy = () => {
-    axios.get('http://localhost:3000/animals').then(res => {
-        console.log(res.data)
-    })
+    axios.get('http://localhost:3000/animals')
+        .then((res) => {
+            //console.log(res.data)
+            for(let i = 0; i < res.data.length; i++){
+               let ohMyTxt = document.createElement('p')
+               ohMyTxt.textContent = res.data[i] 
+               document.body.appendChild(ohMyTxt)
+            }
+        })
 }
 
 document.getElementById('animals-button').addEventListener('click', ohMy)
+
+
 
 
 // PROBLEM 6 
@@ -115,14 +128,18 @@ document.getElementById('animals-button').addEventListener('click', ohMy)
 */
 
 const repeatMyParam = () => {
-    axios.get('http://localhost:3000/repeat/This-is-a-String').then(res => {
-        console.log(res.data)
+    axios.get('http://localhost:3000/repeat/:repeat')
+    .then((res) => {
+        console.log(res.data);
+        let repeatTxt = document.getElementById('repeat-text');
+        repeatTxt.textContent = res.data;
+        repeatTxt.style.display = 'block'
     })
-    document.querySelector('#repeat-text').textContent = res.data
 }
 
-// return axios.get('http://localhost:3000/repeat/I-Love-Coding')
-// .then(res => res.data)
+document.getElementById('repeat-button').addEventListener('click', repeatMyParam)
+
+
 
 // PROBLEM 7
 /*
@@ -151,8 +168,14 @@ const repeatMyParam = () => {
 */
 
 // CODE HERE
-axios.get('http://localhost:3000/query-test?myquery=thisIsMyQuery')
+let attachQuery = () => {
+    axios.get('http://localhost:3000/query-test?user=Dom&post=2020')
+    .then((res) => {
+        console.log(res.data)
+    })
+}
 
+document.getElementById("query-button" ).addEventListener('click', attachQuery)
 
 
 ////////////////
@@ -220,3 +243,22 @@ axios.get('http://localhost:3000/query-test?myquery=thisIsMyQuery')
 */
 
 // CODE HERE 
+
+const createFood = (event) => {
+    event.preventDefault()
+
+   let foodInput = document.getElementById('food-input')
+   let body = {
+    newFood : foodInput.value
+   }
+
+   axios.post(`http://localhost:3000/food`, body)
+    .then((res) => {
+        console.log(res.data)
+    })
+
+    foodInput.value = ''
+}
+
+document.getElementById('add-food-btn').addEventListener('click', createFood)
+
